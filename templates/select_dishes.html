@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Оберіть страви для замовлення</h2>
+<form method="post">
+  {% csrf_token %}
+  {% for dish in dishes %}
+    <div>
+      <label>
+        <input type="checkbox" name="dishes" value="{{ dish.id }}">
+        {{ dish.name }} — {{ dish.price }} грн
+      </label>
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Підтвердити замовлення</button>
+</form>
+{% endblock %}

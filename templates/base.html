@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Ресторан</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .left {
+            font-size: 18px;
+        }
+
+        .right {
+            font-size: 16px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="left">
+        <a href="{% url 'home' %}">🏠 На головну</a>
+    </div>
+    <div class="right">
+        {% if user.is_authenticated %}
+            Вітаю, {{ user.username }} |
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Вийти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Увійти</a> |
+            <a href="{% url 'register' %}">Зареєструватися</a>
+        {% endif %}
+    </div>
+</header>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,2 +1,9 @@
-<h1>Вітаємо у ресторані!</h1>
+
+{% extends "base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+<h1>Ласкаво просимо!</h1>
 <a href="{% url 'order_list' %}">Переглянути замовлення</a>
+{% endblock %}

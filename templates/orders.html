@@ -1,6 +1,16 @@
-<h2>Список замовлень</h2>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Список замовлень</h1>
 <ul>
   {% for order in orders %}
-    <li>{{ order }}</li>
+    <li>
+      <a href="{% url 'order_detail' order.pk %}">
+        Замовлення {{ order.id }} - {{ order.user.username }}
+      </a>
+    </li>
   {% endfor %}
 </ul>
+
+<a href="{% url 'select_dishes' %}" class="btn btn-success">➕ Зробити замовлення</a>
+{% endblock %}
