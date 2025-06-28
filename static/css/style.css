@@ -1,0 +1,24 @@
+h1, h2 {
+    color: #3a7fc4;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.card {
+    box-shadow: 0 4px 10px rgba(204, 176, 176, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

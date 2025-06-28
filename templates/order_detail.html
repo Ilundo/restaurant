@@ -13,6 +13,14 @@
       <li>Немає страв</li>
     {% endfor %}
   </ul>
+{% if user == order.user or user.is_superuser %}
+  <form action="{% url 'delete_order' order.id %}" method="post" style="margin-top: 1em;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Ти впевнений, що хочеш видалити це замовлення?');">
+      Видалити замовлення
+    </button>
+  </form>
+{% endif %}
 
   <a href="{% url 'order_list' %}">Назад до списку замовлень</a>
 {% endblock %}

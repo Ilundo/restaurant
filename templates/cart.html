@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Ваш кошик</h2>
+
+{% if items %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Страва</th>
+        <th>Ціна</th>
+        <th>Кількість</th>
+        <th>Разом</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.dish.name }}</td>
+        <td>{{ item.dish.price }} грн</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.subtotal }} грн</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h4>Загальна сума: {{ total }} грн</h4>
+{% else %}
+  <p>Кошик порожній.</p>
+{% endif %}
+
+{% endblock %}
