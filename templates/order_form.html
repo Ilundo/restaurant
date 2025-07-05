@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Оформлення замовлення</h2>
+<form method="post">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label>Вулиця</label><br>
+    {{ form.street }}
+  </div>
+
+  <div class="mb-3">
+    <label>Місто</label><br>
+    {{ form.city }}
+  </div>
+
+  <div class="mb-3">
+    <label>Поштовий індекс</label><br>
+    {{ form.postal_code }}
+  </div>
+
+  <div class="mb-3">
+    <label>Спосіб оплати</label><br>
+    {{ form.payment_method }}
+  </div>
+
+  <div class="mb-3">
+    <label>Номер картки</label><br>
+    {{ form.card_number }}
+  </div>
+
+  <div class="mb-3">
+    <label>Термін дії</label><br>
+    {{ form.card_expiry }}
+  </div>
+
+  <div class="mb-3">
+    <label>CVV</label><br>
+    {{ form.card_cvv }}
+  </div>
+
+  <button type="submit" class="btn btn-success">Підтвердити замовлення</button>
+</form>
+{% endblock %}

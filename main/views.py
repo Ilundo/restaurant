@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Dish, Order
+
+from .forms import OrderForm
+from .models import Category, Dish, Order
 from django.contrib.auth.decorators import login_required
 def home(request):
     return render(request, 'home.html') 
@@ -31,20 +33,22 @@ def dish_detail(request, pk):
 
 
 def cart_view(request):
-    return render(request, 'cart.html')
     cart = request.session.get('cart', {})
     items = []
     total = 0
 
     for dish_id, quantity in cart.items():
-        dish = Dish.objects.get(id=dish_id)
-        subtotal = dish.price * quantity
-        total += subtotal
-        items.append({
-            'dish': dish,
-            'quantity': quantity,
-            'subtotal': subtotal,
-        })
+        try:
+            dish = Dish.objects.get(id=dish_id)
+            subtotal = dish.price * quantity
+            total += subtotal
+            items.append({
+                'dish': dish,
+                'quantity': quantity,
+                'subtotal': subtotal,
+            })
+        except Dish.DoesNotExist:
+            pass
 
     return render(request, 'cart.html', {'items': items, 'total': total})
 
@@ -59,6 +63,94 @@ def add_to_cart(request, dish_id):
 
     request.session['cart'] = cart
     return redirect('home')
+
+
+
+from .forms import OrderForm
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Dish, Order
+
+@login_required
+def order_form_view(request):
+    cart = request.session.get('cart', {})
+    if not cart:
+        messages.error(request, "Кошик порожній.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            payment_method = form.cleaned_data['payment_method']
+
+            if payment_method == 'card':
+                card_number = form.cleaned_data.get('card_number')
+                card_expiry = form.cleaned_data.get('card_expiry')
+                card_cvv = form.cleaned_data.get('card_cvv')
+
+                if not card_number or not card_expiry or not card_cvv:
+                    messages.error(request, "Будь ласка, заповніть всі поля картки.")
+                    return render(request, 'order_form.html', {'form': form})
+
+            order = Order.objects.create(user=request.user)
+            total = 0
+            for dish_id, quantity in cart.items():
+                dish = Dish.objects.get(id=dish_id)
+                total += dish.price * quantity
+                order.dish.add(dish)
+
+            order.save()
+            request.session['cart'] = {}
+            messages.success(request, "Замовлення успішно створене!")
+            return redirect('home')
+    else:
+        form = OrderForm()
+
+    return render(request, 'order_form.html', {'form': form})
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'categories.html', {'categories': categories})
+
+def category_dishes(request, category_id):
+    category = Category.objects.get(id=category_id)
+    dishes = Dish.objects.filter(category=category, availability=True)
+    return render(request, 'category_dishes.html', {'category': category, 'dishes': dishes})
+
+
+@login_required
+def checkout_view(request):
+    cart = request.session.get('cart', {})
+    items = []
+    total = 0
+
+    for dish_id, quantity in cart.items():
+        dish = Dish.objects.get(id=dish_id)
+        subtotal = dish.price * quantity
+        total += subtotal
+        items.append({'dish': dish, 'quantity': quantity, 'subtotal': subtotal})
+
+    return render(request, 'checkout.html', {'items': items, 'total': total})
+
+
+def increase_quantity(request, dish_id):
+    cart = request.session.get('cart', {})
+    if str(dish_id) in cart:
+        cart[str(dish_id)] += 1
+    request.session['cart'] = cart
+    return redirect('cart')
+
+
+def decrease_quantity(request, dish_id):
+    cart = request.session.get('cart', {})
+    if str(dish_id) in cart:
+        cart[str(dish_id)] -= 1
+        if cart[str(dish_id)] <= 0:
+            del cart[str(dish_id)]
+    request.session['cart'] = cart
+    return redirect('cart')
 
 
 def select_dishes(request):

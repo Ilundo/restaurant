@@ -39,7 +39,8 @@
 <div class="container">
     <header>
         <div class="left">
-            <a href="{% url 'home' %}" class="btn btn-outline-primary btn-sm">На головну</a>
+            <a href="{% url 'home' %}" class="btn btn-primary">На головну</a>
+            <a href="{% url 'category_list' %}" class="btn btn-secondary ms-2">Категорії</a>
         </div>
         <div class="right">
             {% if user.is_authenticated %}

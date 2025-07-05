@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Страви категорії: {{ category.name }}</h2>
+<div class="row">
+  {% for dish in dishes %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        {% if dish.image %}
+          <img src="{{ dish.image.url }}" class="card-img-top" alt="{{ dish.name }}">
+        {% else %}
+          <img src="{% static 'img/default.jpg' %}" class="card-img-top" alt="Немає зображення">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ dish.name }}</h5>
+          <p class="card-text">{{ dish.description }}</p>
+          <p><strong>{{ dish.price }} грн</strong></p>
+          <a href="{% url 'dish_detail' dish.id %}" class="btn btn-primary">Детальніше</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>Немає доступних страв у цій категорії.</p>
+  {% endfor %}
+</div>
+{% endblock %}

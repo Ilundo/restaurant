@@ -17,13 +17,19 @@
       <tr>
         <td>{{ item.dish.name }}</td>
         <td>{{ item.dish.price }} грн</td>
-        <td>{{ item.quantity }}</td>
+        <td>
+          <a href="{% url 'decrease_quantity' item.dish.id %}" class="btn btn-sm btn-outline-danger">−</a>
+          {{ item.quantity }}
+          <a href="{% url 'increase_quantity' item.dish.id %}" class="btn btn-sm btn-outline-success">+</a>
+        </td>
         <td>{{ item.subtotal }} грн</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
   <h4>Загальна сума: {{ total }} грн</h4>
+  <a href="{% url 'checkout' %}" class="btn btn-success">Замовити</a>
+
 {% else %}
   <p>Кошик порожній.</p>
 {% endif %}
