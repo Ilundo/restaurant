@@ -1,4 +1,5 @@
 from django import forms
+from .models import Dish
 
 class OrderForm(forms.Form):
     street = forms.CharField(label="Вулиця", max_length=100)
@@ -14,3 +15,7 @@ class OrderForm(forms.Form):
     card_number = forms.CharField(label="Номер картки", max_length=19, required=False)
     card_expiry = forms.CharField(label="Термін дії (MM/YY)", max_length=5, required=False)
     card_cvv = forms.CharField(label="CVV", max_length=3, required=False)
+class DishForm(forms.ModelForm):
+    class Meta:
+        model = Dish
+        fields = ['name', 'description', 'price', 'category', 'image', 'availability']

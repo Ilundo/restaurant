@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>Профіль</h2>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Нік:</strong> {{ user.username }}</li>
+    <li class="list-group-item"><strong>Роль:</strong> {{ profile.role.name }}</li>
+    <li class="list-group-item"><strong>Дата приєднання:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</li>
+  </ul>
+</div>
+{% endblock %}

@@ -3,7 +3,9 @@
 
 {% block content %}
 <h2>Ласкаво просимо!</h2>
-
+{% if request.user.userprofile.role.name == 'admin' %}
+  <a href="{% url 'dish_create' %}" class="btn btn-success mb-3">Додати страву</a>
+{% endif %}
 <h3>Меню</h3>
 <div class="row">
   {% for dish in dishes %}

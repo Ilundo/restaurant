@@ -16,4 +16,6 @@ urlpatterns = [
     path('order-form/', views.order_form_view, name='order_form'),
     path('categories/', views.category_list, name='category_list'),
     path('categories/<int:category_id>/', views.category_dishes, name='category_dishes'),
+    path('profile/', views.profile_view, name='profile'),
+    path('dish/create/', views.dish_create, name='dish_create'),
 ]
